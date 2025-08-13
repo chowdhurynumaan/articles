@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Dynamics Cards</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM for the application logic -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for transpiling JSX in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- html2canvas for exporting cards as images -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans">
+
+    <div id="root" class="min-h-screen p-6 md:p-12 flex flex-col items-center"></div>
+
+    <script type="text/babel">
+        // Card data for the core concepts section
+        const coreConceptsData = [
+            {
+                id: 'card-1',
+                title: 'The Closed Loop: The Ideal',
+                briefContent: 'Groups that operate as a "closed loop" find fulfillment by pouring their time and attention into a small circle, choosing not to seek more connections.',
+                content: (
+                    <>
+                        You've seen them—families or groups of friends who seem completely impenetrable. They're always out together, planning events that center around one another, and they just seem so sufficient. We often admire this bond, but we rarely stop to think why it happened. These groups operate as a <strong>closed loop</strong>. It's a relationship where every person has made the same choice: "We have enough. We don't need more." They pour their time and attention into this small circle, and in return, find so much fulfillment that they have no energy or desire for anything else.
+                    </>
+                ),
+            },
+            {
+                id: 'card-2',
+                title: 'The Vicious Cycle of Unmet Needs',
+                briefContent: 'This painful dynamic occurs when one person in a relationship absorbs love and attention but never gives anything back, driven by a need for constant validation.',
+                content: (
+                    <>
+                        Sometimes, the essential balance of a closed loop breaks down. One person absorbs the love and respect given to them, but never gives anything back. It's a painful dynamic where one person is truly engaged, and the other is just soaking up the applause. This mentality often comes from the celebrity-obsessed world, where people are led to believe that a few real connections are not enough. This creates a tragic imbalance. The person receiving all the attention is often unaware of the problem; they are just so used to "peddling" for more attention that they don't see the love right in front of them. The root of the issue is a constant, unintentional need to be at the center of attention.
+                    </>
+                ),
+            },
+            {
+                id: 'card-3',
+                title: 'Observable Signs of a One-Sided Dynamic',
+                briefContent: 'A key sign is a constant need to expand their audience, making them unavailable to their core group and using affection as a tool to recruit new members.',
+                content: (
+                    <>
+                        For a person caught in this dynamic, the biggest sign is that their crowd feels too small. They want the whole town to know their name and cheer for them, and they can't accept that they only have a few people who truly care. This constant need to expand their fame makes them unavailable to their true, small crowd. They will use every conversation to try and make an impact, talk about themselves to get others to notice them, and act as if their inner circle is a stage for their performance, rather than a home for their heart. Their affection is a tool to recruit new members for their audience.
+                    </>
+                ),
+            },
+            {
+                id: 'card-4',
+                title: 'The Two-Way Street: Healthy Connections',
+                briefContent: 'A healthy relationship is a two-way street, where people are fulfilled by their small, core group and not driven by a need for external attention or validation.',
+                content: (
+                    <>
+                        A healthy relationship isn't a checklist; it's a deep-seated feeling of safety and genuine connection that can't be faked. It's what happens when someone's door is finally closed. You'll know you are in a healthy connection when the other person is not driven by a need for constant attention. They don't care what the town says because they are so busy and fulfilled with their own small, core group. Their planning, their time, and their entire life are about themselves and the people in their crowd. Their energy is completely invested in these few, core relationships, and their happiness comes from these real moments, not from a need for validation from thousands of others.
+                    </>
+                ),
+            },
+        ];
+
+        // Card data for the examples section
+        const examplesData = [
+            {
+                id: 'card-5',
+                title: 'The Sibling Bond',
+                briefContent: 'A healthy closed loop can be seen in siblings who pour their time and energy into being there for each other, building a life together instead of chasing external validation.',
+                content: (
+                    <>
+                        In a healthy family, siblings choose to pour their time and energy into being there for each other. Instead of chasing new friends or external validation, they use their free time to build a life together. They are each other's biggest supporters, and their joy comes from that unbreakable bond.
+                    </>
+                ),
+            },
+            {
+                id: 'card-6',
+                title: 'The Core Friend Group',
+                briefContent: 'Tight-knit friends strengthen their bonds by saying no to big social events, preferring to invest time in meaningful conversations with the people who matter most.',
+                content: (
+                    <>
+                        A tight-knit group of friends chooses to invest in each other. They say no to parties or big social events because they'd rather have a meaningful dinner or a deep conversation with the people who matter most. The time and energy they would have "wasted" on being seen by the crowd is instead used to strengthen their friendships.
+                    </>
+                ),
+            },
+            {
+                id: 'card-7',
+                briefContent: 'A couple can form a perfectly closed loop by focusing on building a life together and finding affection and validation in each other, not in social media or external approval.',
+                title: 'The Partnership',
+                content: (
+                    <>
+                        A couple that is completely focused on building a life together chooses to invest in each other above all else. The time or energy they could have used to get a post up for social media, or to go to a party for the approval of others, is instead used to spend time with their partner. Their affection and validation come from each other, making them a perfectly closed loop.
+                    </>
+                ),
+            },
+        ];
+
+        const { useState, useEffect } = React;
+
+        const FlipCard = ({ card }) => {
+            const [isFlipped, setIsFlipped] = useState(false);
+
+            // Using a unicode emoji for maximum compatibility and robust rendering
+            const flipIcon = (
+                <span className="text-3xl absolute bottom-2 right-4 text-gray-400">&#x21BA;</span>
+            );
+
+            return (
+                <div
+                    id={card.id}
+                    className="card relative w-full h-96 perspective-1000 cursor-pointer"
+                    onClick={() => setIsFlipped(!isFlipped)}
+                >
+                    <div
+                        className={`relative w-full h-full text-center transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+                    >
+                        {/* Front of the card */}
+                        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-800 to-blue-900 rounded-3xl shadow-xl flex flex-col justify-center p-8 text-pink-300">
+                            <h2 className="text-2xl font-extrabold mb-4">{card.title}</h2>
+                            <p className="text-lg leading-relaxed text-gray-200">
+                                {card.briefContent}
+                            </p>
+                            {flipIcon}
+                        </div>
+                        {/* Back of the card */}
+                        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-blue-900 to-purple-800 rounded-3xl shadow-xl flex items-center justify-center p-8 rotate-y-180 text-gray-200">
+                            <div className="overflow-y-auto max-h-full text-left">
+                                <p className="text-lg leading-relaxed">{card.content}</p>
+                            </div>
+                            {flipIcon}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [isExporting, setIsExporting] = useState(false);
+            const [scriptLoaded, setScriptLoaded] = useState(false);
+
+            useEffect(() => {
+                const checkHtml2canvas = setInterval(() => {
+                    if (window.html2canvas) {
+                        setScriptLoaded(true);
+                        clearInterval(checkHtml2canvas);
+                    }
+                }, 100);
+            }, []);
+
+            const handleExportAllCards = async () => {
+                if (!scriptLoaded) {
+                    console.error('html2canvas script is not yet loaded.');
+                    return;
+                }
+                setIsExporting(true);
+                const cards = document.querySelectorAll('.card');
+
+                for (const card of cards) {
+                    try {
+                        const canvas = await window.html2canvas(card, {
+                            backgroundColor: '#161625',
+                            useCORS: true,
+                            scale: 2,
+                        });
+                        const image = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.download = `${card.id}.png`;
+                        link.href = image;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } catch (error) {
+                        console.error('Failed to export card:', card.id, error);
+                    }
+                }
+                setIsExporting(false);
+            };
+
+            return (
+                <div className="w-full max-w-7xl">
+                    <style>
+                        {`
+                        .perspective-1000 {
+                            perspective: 1000px;
+                        }
+                        .transform-style-3d {
+                            transform-style: preserve-3d;
+                        }
+                        .backface-hidden {
+                            backface-visibility: hidden;
+                        }
+                        .rotate-y-180 {
+                            transform: rotateY(180deg);
+                        }
+                        `}
+                    </style>
+
+                    <div className="mx-auto w-full mb-12 text-center">
+                        <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-4 leading-tight">
+                            Relationship Dynamics
+                        </h1>
+                        <p className="text-xl text-gray-400">
+                            Click on any card below to flip it and reveal the full explanation.
+                        </p>
+                    </div>
+
+                    <div className="w-full max-w-7xl flex flex-col gap-12">
+                        <div>
+                            <h2 className="text-4xl font-bold text-teal-400 mb-6">Core Concepts</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+                                {coreConceptsData.map((card) => (
+                                    <FlipCard key={card.id} card={card} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="pt-8 border-t border-gray-700">
+                            <h2 className="text-4xl font-bold text-teal-400 mb-6">Examples in Action</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+                                {examplesData.map((card) => (
+                                    <FlipCard key={card.id} card={card} />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-16">
+                        <button
+                            onClick={handleExportAllCards}
+                            disabled={isExporting || !scriptLoaded}
+                            className={`
+                                bg-teal-500 hover:bg-teal-600 text-gray-900 font-bold py-3 px-10 rounded-full shadow-lg transition-colors duration-200
+                                ${isExporting || !scriptLoaded ? 'opacity-50 cursor-not-allowed' : ''}
+                            `}
+                        >
+                            {isExporting
+                                ? 'Exporting...'
+                                : !scriptLoaded
+                                ? 'Loading script...'
+                                : 'Export All Cards as Images'}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
